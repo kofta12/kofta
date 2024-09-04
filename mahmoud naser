@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحقق من الموقع</title>
+    <script>
+        window.onload = function() {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                
+                if (isWithinGeofence(latitude, longitude)) {
+                    // توجيه المستخدم إلى نموذج Google Forms
+                    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSdEGFrKPAfuCSo7eq9vT4YAyLfDv-BWWSrlPjE3PPzBip3CuA/viewform?usp=sf_link";
+                } else {
+                    // عرض رسالة تحذير
+                    alert("أنت خارج النطاق المسموح به. لا يمكنك الوصول إلى هذا النموذج.");
+                }
+            }, function(error) {
+                alert("يرجى السماح بالوصول إلى الموقع لتتمكن من استخدام هذا النموذج.");
+            });
+        };
+
+        function isWithinGeofence(lat, lon) {
+            const allowedLat = 30.56;   // خط العرض للنقطة المرجعية
+            const allowedLon = 32.2578; // خط الطول للنقطة المرجعية
+            const radius = 0.1; // نصف القطر بالكيلومترات (100 متر = 0.1 كم)
+
+            const distance = getDistanceFromLatLonInKm(lat, lon, allowedLat, allowedLon);
+            return distance <= radius;
+        }
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; // نصف قطر الأرض بالكيلومترات
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // المسافة بالكيلومترات
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+    </script>
+</head>
+<body>
+    <h1>التحقق من الموقع</h1>
+    <p>يرجى الانتظار بينما نتحقق من موقعك...</p>
+</body>
+</html>
