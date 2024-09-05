@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  #preview {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  #status {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: green;
+  }
+  
